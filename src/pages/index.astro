@@ -2,10 +2,10 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection, getEntry } from 'astro:content';
 
-const gardenPosts = await getCollection('garden');
+const logsPosts = await getCollection('logs');
 
 // Sort posts: evergreen (highest weight) -> budding -> seedling, then by date descending
-const sortedPosts = gardenPosts.sort((a, b) => {
+const sortedPosts = logsPosts.sort((a, b) => {
   const stageWeights = { evergreen: 3, budding: 2, seedling: 1 };
   const stageDiff = stageWeights[b.data.growthStage] - stageWeights[a.data.growthStage];
   if (stageDiff !== 0) return stageDiff;
@@ -29,30 +29,30 @@ const stageEmojis = {
     <div class="space-y-4">
       <h1 class="text-4xl font-mono font-bold tracking-tight">Vivek Soni</h1>
       <p class="text-lg font-serif text-stone-600 dark:text-stone-400 leading-relaxed">
-        I am a software engineer. Currently focused on building developer tools, system architectures, and agentic workflows. This is my digital garden—a collection of thoughts, logs, and stack summaries representing my personal point of view.
+        I am a software engineer. Currently focused on building developer tools, system architectures, and agentic workflows. This is my logbook—a collection of thoughts, logs, and stack summaries representing my personal point of view.
       </p>
     </div>
 
     <hr class="border-stone-200 dark:border-stone-900" />
 
-    {/* Digital Garden section */}
+    {/* Logs section */}
     <div class="space-y-6">
       <div class="flex justify-between items-baseline">
         <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">
-          Digital Garden (Maturity Sorted)
+          Recent Logs (Maturity Sorted)
         </h2>
-        <a href="/garden" class="font-mono text-xs text-stone-500 hover:text-stone-900 dark:hover:text-stone-200 underline">
-          View all notes
+        <a href="/logs" class="font-mono text-xs text-stone-500 hover:text-stone-900 dark:hover:text-stone-200 underline">
+          View all logs
         </a>
       </div>
       
       {sortedPosts.length === 0 ? (
-        <p class="font-serif text-stone-500 italic">No notes cultivated yet.</p>
+        <p class="font-serif text-stone-500 italic">No logs recorded yet.</p>
       ) : (
         <ul class="space-y-6">
           {sortedPosts.slice(0, 5).map(post => (
             <li class="group">
-              <a href={`/garden/${post.slug}`} class="block">
+              <a href={`/logs/${post.slug}`} class="block">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
                   <span class="font-serif text-lg font-semibold text-stone-900 dark:text-stone-100 group-hover:underline">
                     {post.data.title}

@@ -140,13 +140,13 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"garden": {
+		"logs": {
 "sample-entry.md": {
 	id: "sample-entry.md";
   slug: "sample-entry";
   body: string;
-  collection: "garden";
-  data: InferEntrySchema<"garden">
+  collection: "logs";
+  data: InferEntrySchema<"logs">
 } & { render(): Render[".md"] };
 };
 "now": {

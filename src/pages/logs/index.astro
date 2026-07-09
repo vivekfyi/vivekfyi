@@ -2,10 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const gardenPosts = await getCollection('garden');
+const logsPosts = await getCollection('logs');
 
 // Sort notes by publication date descending
-const sortedPosts = gardenPosts.sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime());
+const sortedPosts = logsPosts.sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime());
 
 const stageEmojis = {
   seedling: '🌱',
@@ -20,13 +20,13 @@ const stageColors = {
 };
 ---
 
-<BaseLayout title="~/garden — notes" description="Browse all digital garden entries.">
+<BaseLayout title="vivekfyi — logs" description="Browse all personal logs.">
   <div class="space-y-10">
     {/* Page Header */}
     <div class="space-y-3">
-      <h1 class="text-3xl font-mono font-bold tracking-tight">Digital Garden</h1>
+      <h1 class="text-3xl font-mono font-bold tracking-tight">Logs</h1>
       <p class="text-lg font-serif text-stone-600 dark:text-stone-400">
-        A space for thoughts in varying stages of growth. Unlike static articles, these are updated periodically as my perspective evolves.
+        A space for thoughts, ideas, and software engineering logs in varying stages of growth. Unlike static articles, these are updated periodically as my perspective evolves.
       </p>
     </div>
 
@@ -48,15 +48,15 @@ const stageColors = {
       </div>
     </div>
 
-    {/* Garden Feed */}
+    {/* Logs Feed */}
     <div class="space-y-6">
       {sortedPosts.length === 0 ? (
-        <p class="font-serif text-stone-500 italic">The garden is currently empty.</p>
+        <p class="font-serif text-stone-500 italic">No logs are currently recorded.</p>
       ) : (
         <ul class="divide-y divide-stone-200 dark:divide-stone-900">
           {sortedPosts.map(post => (
             <li class="py-6 first:pt-0 last:pb-0 group">
-              <a href={`/garden/${post.slug}`} class="block space-y-2">
+              <a href={`/logs/${post.slug}`} class="block space-y-2">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
                   <h2 class="text-xl font-serif font-bold text-stone-900 dark:text-stone-50 group-hover:underline">
                     {post.data.title}

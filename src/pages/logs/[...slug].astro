@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const gardenEntries = await getCollection('garden');
-  return gardenEntries.map(entry => ({
+  const logsEntries = await getCollection('logs');
+  return logsEntries.map(entry => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
@@ -26,7 +26,7 @@ const stageColors = {
 };
 ---
 
-<BaseLayout title={`~/garden — ${entry.data.title}`} description={entry.data.description}>
+<BaseLayout title={`vivekfyi — logs — ${entry.data.title}`} description={entry.data.description}>
   <article class="space-y-8">
     {/* Post Metadata Header */}
     <div class="space-y-4">
@@ -63,8 +63,8 @@ const stageColors = {
 
     {/* Navigation */}
     <div class="pt-2 font-mono text-xs">
-      <a href="/garden" class="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-200 transition-colors inline-flex items-center gap-1">
-        &larr; Back to garden
+      <a href="/logs" class="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-200 transition-colors inline-flex items-center gap-1">
+        &larr; Back to logs
       </a>
     </div>
   </article>

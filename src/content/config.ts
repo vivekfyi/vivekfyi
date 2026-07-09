@@ -1,7 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 
-// Digital Garden Schema
-const garden = defineCollection({
+// Logs Schema
+const logs = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
@@ -44,6 +44,6 @@ const lists = defineCollection({
 });
 
 export const collections = {
-  garden,
+  logs,
   lists,
 };
