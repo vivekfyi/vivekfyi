@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "A minimalist personal site and digital garden." } = Astro.props;
+const { title, description = "A minimalist personal site and logs feed." } = Astro.props;
 
 // We parse pathname to determine active navigation styling
 const pathname = new URL(Astro.request.url).pathname;

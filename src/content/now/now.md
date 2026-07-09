@@ -3,7 +3,7 @@
 *Updated from my workspace.*
 
 ## Current Focus
-* **Developing Antigravity:** Building a robust, hyper-minimalist personal portfolio and digital garden framework using Astro and Tailwind CSS.
+* **Developing Antigravity:** Building a robust, hyper-minimalist personal portfolio and logs framework using Astro and Tailwind CSS.
 * **Prototyping Tools:** Deeply exploring agentic workflows, LLM integration schemas, and developer productivity tooling.
 * **Consuming:** Shifting focus towards offline physical books and long-form technical blogs rather than social feeds.
 
