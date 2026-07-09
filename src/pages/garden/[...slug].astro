@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const gardenEntries = await getCollection('garden');
+  return gardenEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const stageEmojis = {
+  seedling: '🌱',
+  budding: '🌿',
+  evergreen: '🌳'
+};
+
+const stageColors = {
+  seedling: 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-300 dark:border-emerald-900/50',
+  budding: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/20 dark:text-amber-300 dark:border-amber-900/50',
+  evergreen: 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/20 dark:text-blue-300 dark:border-blue-900/50'
+};
+---
+
+<BaseLayout title={`~/garden — ${entry.data.title}`} description={entry.data.description}>
+  <article class="space-y-8">
+    {/* Post Metadata Header */}
+    <div class="space-y-4">
+      <div>
+        <span class={`font-mono text-xs px-2.5 py-1 rounded-full border ${stageColors[entry.data.growthStage]} inline-flex items-center gap-1.5`}>
+          <span>{stageEmojis[entry.data.growthStage]}</span>
+          <span class="capitalize font-bold">{entry.data.growthStage}</span>
+        </span>
+      </div>
+      
+      <h1 class="text-3xl font-mono font-bold tracking-tight text-stone-900 dark:text-stone-50 leading-tight">
+        {entry.data.title}
+      </h1>
+
+      <div class="flex items-center gap-2 font-mono text-xs text-stone-400 dark:text-stone-500">
+        <span>Planted: {new Date(entry.data.publishedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        {entry.data.updatedDate && (
+          <>
+            <span>•</span>
+            <span>Cultivated: {new Date(entry.data.updatedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          </>
+        )}
+      </div>
+    </div>
+
+    <hr class="border-stone-200 dark:border-stone-900" />
+
+    {/* Body Content */}
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+
+    <hr class="border-stone-200 dark:border-stone-900 mt-12" />
+
+    {/* Navigation */}
+    <div class="pt-2 font-mono text-xs">
+      <a href="/garden" class="text-stone-500 hover:text-stone-900 dark:text-stone-400 dark:hover:text-stone-200 transition-colors inline-flex items-center gap-1">
+        &larr; Back to garden
+      </a>
+    </div>
+  </article>
+</BaseLayout>

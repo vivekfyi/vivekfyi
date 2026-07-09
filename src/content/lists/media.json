@@ -1,0 +1,37 @@
+{
+  "type": "media",
+  "items": [
+    {
+      "title": "Designing Data-Intensive Applications",
+      "author": "Martin Kleppmann",
+      "type": "book",
+      "status": "reading",
+      "takeaway": "An incredible deep-dive into database internals, replication protocols, and consistency models.",
+      "url": "https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/"
+    },
+    {
+      "title": "Crafting Interpreters",
+      "author": "Robert Nystrom",
+      "type": "book",
+      "status": "completed",
+      "takeaway": "Hands down the most digestible book on compiler and interpreter design. Built both tree-walk and bytecode VMs.",
+      "url": "https://craftinginterpreters.com/"
+    },
+    {
+      "title": "Clean Code",
+      "author": "Robert C. Martin",
+      "type": "book",
+      "status": "backlog",
+      "takeaway": "Plan to read to re-evaluate classical OOP patterns in a modern, functional-leaning JS/TS world.",
+      "url": "https://www.oreilly.com/library/view/clean-code-a-handbook/9780136083238/"
+    },
+    {
+      "title": "Building a Digital Garden",
+      "author": "Maggie Appleton",
+      "type": "article",
+      "status": "completed",
+      "takeaway": "Articulated the shift from chronological blog streams to topic-based spatial networks of ideas.",
+      "url": "https://maggieappleton.com/garden-history"
+    }
+  ]
+}

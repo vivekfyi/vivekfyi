@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased selection:bg-stone-200 dark:selection:bg-stone-800 transition-colors duration-200;
+  }
+
+  /* Custom styling for rendered markdown content in BaseLayout */
+  .prose {
+    @apply text-stone-800 dark:text-stone-200 font-serif leading-relaxed;
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    @apply font-mono font-bold text-stone-900 dark:text-stone-50 mt-6 mb-3 tracking-tight;
+  }
+  .prose h1 { @apply text-2xl border-b border-stone-200 dark:border-stone-800 pb-2; }
+  .prose h2 { @apply text-xl; }
+  .prose h3 { @apply text-lg; }
+  
+  .prose p {
+    @apply mb-4 text-base md:text-lg;
+  }
+  .prose a {
+    @apply text-stone-900 dark:text-stone-50 underline decoration-stone-400 hover:decoration-stone-900 dark:decoration-stone-600 dark:hover:decoration-stone-100 transition-colors;
+  }
+  .prose ul {
+    @apply list-disc pl-6 mb-4 space-y-1;
+  }
+  .prose ol {
+    @apply list-decimal pl-6 mb-4 space-y-1;
+  }
+  .prose blockquote {
+    @apply pl-4 border-l-2 border-stone-300 dark:border-stone-700 italic text-stone-600 dark:text-stone-400 my-4;
+  }
+  .prose code {
+    @apply font-mono bg-stone-100 dark:bg-stone-900 text-sm px-1.5 py-0.5 rounded border border-stone-200 dark:border-stone-800;
+  }
+  .prose pre {
+    @apply font-mono bg-stone-100 dark:bg-stone-900 text-sm p-4 rounded-lg overflow-x-auto border border-stone-200 dark:border-stone-800 my-4;
+  }
+  .prose pre code {
+    @apply p-0 bg-transparent border-0 rounded-none;
+  }
+}

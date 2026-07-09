@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+const gardenPosts = await getCollection('garden');
+
+// Sort posts: evergreen (highest weight) -> budding -> seedling, then by date descending
+const sortedPosts = gardenPosts.sort((a, b) => {
+  const stageWeights = { evergreen: 3, budding: 2, seedling: 1 };
+  const stageDiff = stageWeights[b.data.growthStage] - stageWeights[a.data.growthStage];
+  if (stageDiff !== 0) return stageDiff;
+  return new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime();
+});
+
+// Fetch currently active reading items
+const mediaEntry = await getEntry('lists', 'media');
+const activeMedia = mediaEntry?.data?.items?.filter((item: any) => item.status === 'reading') || [];
+
+const stageEmojis = {
+  seedling: '🌱',
+  budding: '🌿',
+  evergreen: '🌳'
+};
+---
+
+<BaseLayout title="~/pov — home" description="A minimalist personal digital garden and POV site.">
+  <section class="space-y-12">
+    {/* Intro Header */}
+    <div class="space-y-4">
+      <h1 class="text-4xl font-mono font-bold tracking-tight">John Doe</h1>
+      <p class="text-lg font-serif text-stone-600 dark:text-stone-400 leading-relaxed">
+        I am a software engineer, designer, and writer. This is my digital garden—a collection of thoughts, logs, and stack summaries representing my personal point of view.
+      </p>
+    </div>
+
+    <hr class="border-stone-200 dark:border-stone-900" />
+
+    {/* Digital Garden section */}
+    <div class="space-y-6">
+      <div class="flex justify-between items-baseline">
+        <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">
+          Digital Garden (Maturity Sorted)
+        </h2>
+        <a href="/garden" class="font-mono text-xs text-stone-500 hover:text-stone-900 dark:hover:text-stone-200 underline">
+          View all notes
+        </a>
+      </div>
+      
+      {sortedPosts.length === 0 ? (
+        <p class="font-serif text-stone-500 italic">No notes cultivated yet.</p>
+      ) : (
+        <ul class="space-y-6">
+          {sortedPosts.slice(0, 5).map(post => (
+            <li class="group">
+              <a href={`/garden/${post.slug}`} class="block">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1">
+                  <span class="font-serif text-lg font-semibold text-stone-900 dark:text-stone-100 group-hover:underline">
+                    {post.data.title}
+                  </span>
+                  <span class="font-mono text-xs text-stone-400 dark:text-stone-500 flex items-center gap-1.5 whitespace-nowrap">
+                    <span>{stageEmojis[post.data.growthStage]} {post.data.growthStage}</span>
+                    <span>•</span>
+                    <span>{new Date(post.data.publishedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
+                  </span>
+                </div>
+                {post.data.description && (
+                  <p class="text-stone-600 dark:text-stone-400 font-serif text-sm mt-1 leading-relaxed">
+                    {post.data.description}
+                  </p>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <hr class="border-stone-200 dark:border-stone-900" />
+
+    {/* Current Active Logs */}
+    {activeMedia.length > 0 && (
+      <div class="space-y-6">
+        <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500">
+          Currently Reading & Reviewing
+        </h2>
+        <ul class="space-y-4">
+          {activeMedia.map((item: any) => (
+            <li class="border-l-2 border-stone-300 dark:border-stone-800 pl-4 py-1">
+              <div class="flex items-baseline gap-2 flex-wrap">
+                <span class="font-serif font-bold text-stone-900 dark:text-stone-100 text-base">{item.title}</span>
+                <span class="text-xs font-mono text-stone-400 dark:text-stone-500">by {item.author}</span>
+              </div>
+              {item.takeaway && (
+                <p class="text-stone-600 dark:text-stone-400 font-serif text-sm mt-1 italic">
+                  "{item.takeaway}"
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {/* Footer Call-to-action */}
+    <div class="pt-6 font-mono text-xs text-stone-400 dark:text-stone-500">
+      <p>
+        See what I'm up to today on the <a href="/now" class="underline text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">/now</a> page, check my setup in <a href="/uses" class="underline text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">/uses</a>, or browse the media library in <a href="/media" class="underline text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100">/media</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

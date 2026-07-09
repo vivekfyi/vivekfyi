@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+// Fetch the 'media' JSON list
+const mediaEntry = await getEntry('lists', 'media');
+const items = mediaEntry?.data?.items || [];
+
+const statuses = ['reading', 'completed', 'backlog'];
+const statusLabels: Record<string, string> = {
+  reading: 'Currently Reading / Consuming',
+  completed: 'Finished / Cultivated',
+  backlog: 'Backlog / To Consume'
+};
+const statusColors: Record<string, string> = {
+  reading: 'border-l-2 border-emerald-500 dark:border-emerald-500/50 pl-4',
+  completed: 'border-l-2 border-blue-500 dark:border-blue-500/50 pl-4',
+  backlog: 'border-l-2 border-stone-300 dark:border-stone-800 pl-4'
+};
+---
+
+<BaseLayout title="~/media — shelf & stream" description="Logs of reading, watching, and listening, with micro-takeaways.">
+  <div class="space-y-10">
+    {/* Page Header */}
+    <div class="space-y-3">
+      <h1 class="text-3xl font-mono font-bold tracking-tight">/media</h1>
+      <p class="text-lg font-serif text-stone-600 dark:text-stone-400">
+        A structured shelf of books, papers, and essays, tracking progress and distilled micro-takeaways.
+      </p>
+    </div>
+
+    <hr class="border-stone-200 dark:border-stone-900" />
+
+    {/* Media Status Columns */}
+    <div class="space-y-12">
+      {items.length === 0 ? (
+        <p class="font-serif text-stone-500 italic">No media items recorded.</p>
+      ) : (
+        statuses.map(status => {
+          const filteredItems = items.filter((item: any) => item.status === status);
+          if (filteredItems.length === 0) return null;
+          return (
+            <section class="space-y-6">
+              <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-stone-400 dark:text-stone-500 border-b border-stone-100 dark:border-stone-900 pb-1">
+                {statusLabels[status]}
+              </h2>
+              <ul class="space-y-6">
+                {filteredItems.map((item: any) => (
+                  <li class={statusColors[status]}>
+                    <div class="space-y-1.5">
+                      <div class="flex items-baseline gap-2 flex-wrap">
+                        {item.url ? (
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-serif font-bold text-lg text-stone-900 hover:underline dark:text-stone-100 flex items-center gap-0.5"
+                          >
+                            {item.title}
+                            <span class="text-xs text-stone-400 dark:text-stone-600 font-mono select-none">&nearr;</span>
+                          </a>
+                        ) : (
+                          <span class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">
+                            {item.title}
+                          </span>
+                        )}
+                        <span class="text-xs font-mono text-stone-400 dark:text-stone-500">
+                          by {item.author}
+                        </span>
+                        <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-500 dark:text-stone-400 capitalize">
+                          {item.type}
+                        </span>
+                      </div>
+                      {item.takeaway && (
+                        <p class="font-serif text-stone-600 dark:text-stone-400 text-sm leading-relaxed italic">
+                          "{item.takeaway}"
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })
+      )}
+    </div>
+  </div>
+</BaseLayout>

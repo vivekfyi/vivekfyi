@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Content } from '../content/now/now.md';
+import { execSync } from 'child_process';
+import { statSync } from 'fs';
+import { resolve } from 'path';
+
+let lastUpdated = '';
+try {
+  // Query git history for the file's last commit timestamp
+  lastUpdated = execSync('git log -1 --format=%cd -- src/content/now/now.md').toString().trim();
+  if (lastUpdated) {
+    lastUpdated = new Date(lastUpdated).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZoneName: 'short'
+    });
+  }
+} catch (e) {
+  // Git command failed, we'll fall back to filesystem mtime below
+}
+
+if (!lastUpdated) {
+  try {
+    const fileStats = statSync(resolve('src/content/now/now.md'));
+    lastUpdated = fileStats.mtime.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }) + ' (local file stat)';
+  } catch (err) {
+    lastUpdated = 'Unknown';
+  }
+}
+---
+
+<BaseLayout title="~/now — what I'm doing now" description="A record of current focus, learning, and projects.">
+  <article class="space-y-8">
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+
+    <hr class="border-stone-200 dark:border-stone-900 mt-12" />
+
+    <div class="font-mono text-xs text-stone-400 dark:text-stone-500 flex flex-col sm:flex-row justify-between gap-2">
+      <span>Page type: Focus log (/now)</span>
+      <span>Last modified: {lastUpdated}</span>
+    </div>
+  </article>
+</BaseLayout>

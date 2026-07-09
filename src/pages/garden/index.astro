@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const gardenPosts = await getCollection('garden');
+
+// Sort notes by publication date descending
+const sortedPosts = gardenPosts.sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime());
+
+const stageEmojis = {
+  seedling: '🌱',
+  budding: '🌿',
+  evergreen: '🌳'
+};
+
+const stageColors = {
+  seedling: 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/20 dark:text-emerald-300 dark:border-emerald-900/50',
+  budding: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/20 dark:text-amber-300 dark:border-amber-900/50',
+  evergreen: 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/20 dark:text-blue-300 dark:border-blue-900/50'
+};
+---
+
+<BaseLayout title="~/garden — notes" description="Browse all digital garden entries.">
+  <div class="space-y-10">
+    {/* Page Header */}
+    <div class="space-y-3">
+      <h1 class="text-3xl font-mono font-bold tracking-tight">Digital Garden</h1>
+      <p class="text-lg font-serif text-stone-600 dark:text-stone-400">
+        A space for thoughts in varying stages of growth. Unlike static articles, these are updated periodically as my perspective evolves.
+      </p>
+    </div>
+
+    <hr class="border-stone-200 dark:border-stone-900" />
+
+    {/* Stage Legend */}
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-stone-100 dark:bg-stone-900/40 rounded border border-stone-200/60 dark:border-stone-900 font-mono text-xs">
+      <div class="space-y-1">
+        <span class="flex items-center gap-1.5 font-bold text-emerald-800 dark:text-emerald-300">🌱 Seedling</span>
+        <p class="text-stone-500 dark:text-stone-400">Fresh, unpolished thoughts, raw notes, or logs.</p>
+      </div>
+      <div class="space-y-1">
+        <span class="flex items-center gap-1.5 font-bold text-amber-800 dark:text-amber-300">🌿 Budding</span>
+        <p class="text-stone-500 dark:text-stone-400">Refining structural notes, connecting external references.</p>
+      </div>
+      <div class="space-y-1">
+        <span class="flex items-center gap-1.5 font-bold text-blue-800 dark:text-blue-300">🌳 Evergreen</span>
+        <p class="text-stone-500 dark:text-stone-400">Highly refined concepts, synthesized summaries, and final thoughts.</p>
+      </div>
+    </div>
+
+    {/* Garden Feed */}
+    <div class="space-y-6">
+      {sortedPosts.length === 0 ? (
+        <p class="font-serif text-stone-500 italic">The garden is currently empty.</p>
+      ) : (
+        <ul class="divide-y divide-stone-200 dark:divide-stone-900">
+          {sortedPosts.map(post => (
+            <li class="py-6 first:pt-0 last:pb-0 group">
+              <a href={`/garden/${post.slug}`} class="block space-y-2">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-2">
+                  <h2 class="text-xl font-serif font-bold text-stone-900 dark:text-stone-50 group-hover:underline">
+                    {post.data.title}
+                  </h2>
+                  <span class={`font-mono text-xs px-2 py-0.5 rounded border ${stageColors[post.data.growthStage]} flex items-center gap-1 self-start sm:self-auto`}>
+                    <span>{stageEmojis[post.data.growthStage]}</span>
+                    <span class="capitalize">{post.data.growthStage}</span>
+                  </span>
+                </div>
+                
+                {post.data.description && (
+                  <p class="text-stone-600 dark:text-stone-400 font-serif text-sm leading-relaxed">
+                    {post.data.description}
+                  </p>
+                )}
+
+                <div class="font-mono text-xs text-stone-400 dark:text-stone-500">
+                  Planted {new Date(post.data.publishedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+</BaseLayout>

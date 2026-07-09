@@ -1,0 +1,41 @@
+{
+  "type": "uses",
+  "items": [
+    {
+      "name": "MacBook Pro 14\" (M3 Max, 64GB RAM)",
+      "category": "Hardware",
+      "description": "My primary workstation. Quiet, battery-efficient, and easily handles local LLMs and heavy builds.",
+      "url": "https://www.apple.com/macbook-pro/"
+    },
+    {
+      "name": "Apple Studio Display",
+      "category": "Hardware",
+      "description": "5K resolution matches macOS scaling perfectly, minimizing eye strain during long coding sessions.",
+      "url": "https://www.apple.com/studio-display/"
+    },
+    {
+      "name": "HHKB Professional HYBRID Type-S",
+      "category": "Hardware",
+      "description": "Silent Topre switches in a compact, ergonomic layout that has cured my wrist fatigue.",
+      "url": "https://hhkb.io/"
+    },
+    {
+      "name": "Visual Studio Code (with Tokyo Night)",
+      "category": "Software",
+      "description": "A customized, distraction-free environment paired with Vim keybindings and system monospace fonts.",
+      "url": "https://code.visualstudio.com/"
+    },
+    {
+      "name": "Arc Browser",
+      "category": "Software",
+      "description": "Replaces standard browser tabs with sidebar spaces, making research categorization much cleaner.",
+      "url": "https://arc.net/"
+    },
+    {
+      "name": "Tailscale",
+      "category": "Software",
+      "description": "Zero-config mesh VPN that seamlessly links my phone, laptop, and home server.",
+      "url": "https://tailscale.com/"
+    }
+  ]
+}
